@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>I Love You 💖</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: linear-gradient(to bottom, #ff758c, #ff7eb3);
+        font-family: Arial, sans-serif;
+        text-align: center;
+        color: white;
+    }
+
+    h1 {
+        margin-top: 20px;
+        font-size: 40px;
+    }
+
+    #message {
+        font-size: 24px;
+        margin-top: 10px;
+        height: 40px;
+    }
+
+    .heart {
+        position: absolute;
+        font-size: 30px;
+        cursor: pointer;
+        animation: float 5s linear infinite;
+    }
+
+    @keyframes float {
+        from { transform: translateY(100vh); }
+        to { transform: translateY(-10vh); }
+    }
+
+    #score {
+        position: fixed;
+        top: 10px;
+        right: 20px;
+        font-size: 20px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Click the Hearts 💖</h1>
+<div id="message"></div>
+<div id="score">Hearts Collected: 0</div>
+
+<script>
+let messages = [
+    "I Love You ❤️",
+    "You Mean The World To Me 🌎",
+    "Forever & Always 💍",
+    "You're My Sunshine ☀️",
+    "My Heart Is Yours 💕"
+];
+
+let score = 0;
+
+function createHeart() {
+    let heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 90 + "vw";
+    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+    heart.onclick = function() {
+        score++;
+        document.getElementById("score").innerText = 
+            "Hearts Collected: " + score;
+
+        document.getElementById("message").innerText = 
+            messages[Math.floor(Math.random() * messages.length)];
+
+        heart.remove();
+    };
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 5000);
+}
+
+setInterval(createHeart, 800);
+</script>
+
+</body>
+</html>
