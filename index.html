@@ -2,47 +2,52 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>For Jini 💖</title>
+<title>Romantic Puzzle for Jini 💖</title>
 <style>
     body {
-        margin: 0;
-        overflow: hidden;
-        background: linear-gradient(to bottom, #ff6f91, #ff9671);
-        font-family: 'Arial', sans-serif;
+        font-family: Arial, sans-serif;
         text-align: center;
+        background: linear-gradient(to bottom right, #ff758c, #ff7eb3);
         color: white;
+        margin: 0;
+        padding: 20px;
     }
 
     h1 {
-        margin-top: 20px;
-        font-size: 42px;
+        font-size: 36px;
     }
 
-    #score {
-        position: fixed;
-        top: 15px;
-        right: 20px;
-        font-size: 20px;
+    #puzzle {
+        width: 300px;
+        height: 300px;
+        margin: 20px auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 5px;
     }
 
-    .heart {
-        position: absolute;
-        font-size: 35px;
+    .tile {
+        background: rgba(255, 255, 255, 0.9);
+        color: #ff4d6d;
+        font-size: 28px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
-        animation: float 6s linear infinite;
+        border-radius: 10px;
     }
 
-    @keyframes float {
-        from { transform: translateY(100vh); }
-        to { transform: translateY(-10vh); }
+    .empty {
+        background: transparent;
+        cursor: default;
     }
 
-    #finalMessage {
+    #message {
         display: none;
-        position: fixed;
-        top: 40%;
-        width: 100%;
-        font-size: 30px;
+        font-size: 28px;
+        margin-top: 20px;
         animation: fadeIn 2s ease-in;
     }
 
@@ -50,51 +55,78 @@
         from { opacity: 0; }
         to { opacity: 1; }
     }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background: white;
+        color: #ff4d6d;
+    }
 </style>
 </head>
 <body>
 
-<h1>Jini, Catch My Love 💖</h1>
-<div id="score">Hearts Collected: 0</div>
-<div id="finalMessage"></div>
+<h1>Jini 💖 Solve the Puzzle</h1>
+<p>Arrange the tiles to reveal the love message</p>
+
+<div id="puzzle"></div>
+<button onclick="shuffle()">Shuffle Again</button>
+
+<div id="message">
+    Jini 💕<br><br>
+    You solved my heart...<br>
+    And the answer is simple...<br><br>
+    <b>I LOVE YOU ❤️</b>
+</div>
 
 <script>
-let score = 0;
-let target = 15; // Hearts needed to unlock surprise
+let tiles = ["I", "L", "O", "V", "E", "Y", "O", "U", ""];
+let puzzle = document.getElementById("puzzle");
 
-function createHeart() {
-    let heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "💗";
-    heart.style.left = Math.random() * 90 + "vw";
-    heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-
-    heart.onclick = function() {
-        score++;
-        document.getElementById("score").innerText = 
-            "Hearts Collected: " + score;
-
-        heart.remove();
-
-        if (score >= target) {
-            showFinalMessage();
-        }
-    };
-
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 6000);
+function render() {
+    puzzle.innerHTML = "";
+    tiles.forEach((tile, index) => {
+        let div = document.createElement("div");
+        div.className = tile === "" ? "tile empty" : "tile";
+        div.innerText = tile;
+        div.onclick = () => move(index);
+        puzzle.appendChild(div);
+    });
 }
 
-function showFinalMessage() {
-    document.getElementById("finalMessage").style.display = "block";
-    document.getElementById("finalMessage").innerHTML = 
-        "Jini 💖<br><br>You caught all my hearts...<br>But the truth is...<br><br><b>I LOVE YOU SO MUCH ❤️</b><br><br>Forever Yours 💍";
+function move(index) {
+    let emptyIndex = tiles.indexOf("");
+    let validMoves = [
+        emptyIndex - 1,
+        emptyIndex + 1,
+        emptyIndex - 3,
+        emptyIndex + 3
+    ];
+
+    if (validMoves.includes(index)) {
+        [tiles[emptyIndex], tiles[index]] = [tiles[index], tiles[emptyIndex]];
+        render();
+        checkWin();
+    }
 }
 
-setInterval(createHeart, 900);
+function shuffle() {
+    tiles.sort(() => Math.random() - 0.5);
+    document.getElementById("message").style.display = "none";
+    render();
+}
+
+function checkWin() {
+    let win = ["I", "L", "O", "V", "E", "Y", "O", "U", ""];
+    if (tiles.join() === win.join()) {
+        document.getElementById("message").style.display = "block";
+    }
+}
+
+shuffle();
 </script>
 
 </body>
