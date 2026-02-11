@@ -2,33 +2,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>I Love You 💖</title>
+<title>For Jini 💖</title>
 <style>
     body {
         margin: 0;
         overflow: hidden;
-        background: linear-gradient(to bottom, #ff758c, #ff7eb3);
-        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #ff6f91, #ff9671);
+        font-family: 'Arial', sans-serif;
         text-align: center;
         color: white;
     }
 
     h1 {
         margin-top: 20px;
-        font-size: 40px;
+        font-size: 42px;
     }
 
-    #message {
-        font-size: 24px;
-        margin-top: 10px;
-        height: 40px;
+    #score {
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        font-size: 20px;
     }
 
     .heart {
         position: absolute;
-        font-size: 30px;
+        font-size: 35px;
         cursor: pointer;
-        animation: float 5s linear infinite;
+        animation: float 6s linear infinite;
     }
 
     @keyframes float {
@@ -36,57 +37,64 @@
         to { transform: translateY(-10vh); }
     }
 
-    #score {
+    #finalMessage {
+        display: none;
         position: fixed;
-        top: 10px;
-        right: 20px;
-        font-size: 20px;
+        top: 40%;
+        width: 100%;
+        font-size: 30px;
+        animation: fadeIn 2s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 </style>
 </head>
 <body>
 
-<h1>Click the Hearts 💖</h1>
-<div id="message"></div>
+<h1>Jini, Catch My Love 💖</h1>
 <div id="score">Hearts Collected: 0</div>
+<div id="finalMessage"></div>
 
 <script>
-let messages = [
-    "I Love You ❤️",
-    "You Mean The World To Me 🌎",
-    "Forever & Always 💍",
-    "You're My Sunshine ☀️",
-    "My Heart Is Yours 💕"
-];
-
 let score = 0;
+let target = 15; // Hearts needed to unlock surprise
 
 function createHeart() {
     let heart = document.createElement("div");
     heart.classList.add("heart");
-    heart.innerHTML = "💖";
+    heart.innerHTML = "💗";
     heart.style.left = Math.random() * 90 + "vw";
-    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+    heart.style.animationDuration = (4 + Math.random() * 3) + "s";
 
     heart.onclick = function() {
         score++;
         document.getElementById("score").innerText = 
             "Hearts Collected: " + score;
 
-        document.getElementById("message").innerText = 
-            messages[Math.floor(Math.random() * messages.length)];
-
         heart.remove();
+
+        if (score >= target) {
+            showFinalMessage();
+        }
     };
 
     document.body.appendChild(heart);
 
     setTimeout(() => {
         heart.remove();
-    }, 5000);
+    }, 6000);
 }
 
-setInterval(createHeart, 800);
+function showFinalMessage() {
+    document.getElementById("finalMessage").style.display = "block";
+    document.getElementById("finalMessage").innerHTML = 
+        "Jini 💖<br><br>You caught all my hearts...<br>But the truth is...<br><br><b>I LOVE YOU SO MUCH ❤️</b><br><br>Forever Yours 💍";
+}
+
+setInterval(createHeart, 900);
 </script>
 
 </body>
